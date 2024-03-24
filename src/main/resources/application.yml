@@ -17,11 +17,24 @@ spring:
       - id: SECURE-ME-AUTHENTICATION
         uri: lb://SECURE-ME-AUTHENTICATION
         predicates:
-        - Path=/authentication/**
+        - Path=/user/authentication/**
+      - id: SECURE-ME-AUTHENTICATION
+        uri: lb://SECURE-ME-AUTHENTICATION
+        predicates:
+          - Path=/user/register/**
+      - id: SECURE-ME-AUTHENTICATION
+        uri: lb://SECURE-ME-AUTHENTICATION
+        predicates:
+          - Path=/user/validateToken/**
+        filters:
+          - AuthorizationFilter
       - id: SECURE-ME-METADATA
         uri: lb://SECURE-ME-METADATA
         predicates:
-        - Path=/metadata/**
+          - Path=/metadata/**
+        filters:
+          - AuthorizationFilter
+
           
           
     

@@ -15,7 +15,7 @@ public class RouteLocatorConfiguration {
 	private static final Logger log= LoggerFactory.getLogger(RouteLocatorConfiguration.class);
 	
 	@Bean
-	@Order(-1)
+	@Order(1)
 	GlobalFilter globalFilter() {
 	    return (exchange, chain) -> {
 	        log.info("first pre filter");
