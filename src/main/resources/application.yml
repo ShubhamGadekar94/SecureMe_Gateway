@@ -1,14 +1,34 @@
 server:
   port: 8000
+  ssl:
+    enabled: false
+    bundle: "secureme-gateway"
+    enabled-protocols: TLSv1.3
 spring:
   application:
     name: secure-me-gateway
+  ssl:
+    enabled: true
+    bundle:
+      jks:
+        secureme-gateway:
+          key:
+            alias: "secureme-gateway"
+          keystore:
+            location: "classpath:secureme-gateway.jks"
+            password: "secureme-gateway"
+            type: "JKS"
+            provider: "SUN"
+          truststore:
+            location: "classpath:secureme-gateway.jks"
+            password: "secureme-gateway"
+            type: "JKS"
   profiles:
     active:
     - dev
   config:
     import:
-    - optional:configserver:http://config:config@localhost:8888
+    - optional:configserver:https://config:config@localhost:8888
   main:
     web-application-type: reactive
   cloud:
@@ -22,6 +42,10 @@ spring:
         uri: lb://SECURE-ME-AUTHENTICATION
         predicates:
           - Path=/user/register/**
+      - id: SECURE-ME-AUTHENTICATION
+        uri: lb://SECURE-ME-AUTHENTICATION
+        predicates:
+          - Path=/roles
       - id: SECURE-ME-AUTHENTICATION
         uri: lb://SECURE-ME-AUTHENTICATION
         predicates:
